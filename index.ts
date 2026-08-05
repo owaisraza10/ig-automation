@@ -31,10 +31,22 @@ function savePostedId(id: string) {
     fs.writeFileSync(POSTED_LOG_FILE, JSON.stringify(posted, null, 2));
 }
 
-const auth = new google.auth.GoogleAuth({
-    keyFile: process.env.RENDER ? '/opt/render/project/src/google-service-account.json' : './google-service-account.json',
-    scopes: ['https://www.googleapis.com/auth/drive.readonly'],
-});
+// Initialize Google Drive API (Supports Base64 for Render or local JSON file for testing)
+let auth;
+if (process.env.GOOGLE_SERVICE_ACCOUNT_BASE64) {
+    const decodedCreds = JSON.parse(
+        Buffer.from(process.env.GOOGLE_SERVICE_ACCOUNT_BASE64, 'base64').toString('utf-8')
+    );
+    auth = new google.auth.GoogleAuth({
+        credentials: decodedCreds,
+        scopes: ['https://www.googleapis.com/auth/drive.readonly'],
+    });
+} else {
+    auth = new google.auth.GoogleAuth({
+        keyFile: './google-service-account.json',
+        scopes: ['https://www.googleapis.com/auth/drive.readonly'],
+    });
+}
 const drive = google.drive({ version: 'v3', auth });
 
 async function runAutomation() {
