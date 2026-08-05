@@ -129,4 +129,4 @@ async function startWorker() {
     }
 }
 
-startWorker();
+runAutomation();
