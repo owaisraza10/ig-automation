@@ -12,9 +12,8 @@ const IG_ACCESS_TOKEN = process.env.IG_ACCESS_TOKEN!;
 const DEFAULT_CAPTION = process.env.DEFAULT_CAPTION || 'Check out our latest Reel! 🔥';
 
 // Use Render's persistent disk directory if running live, otherwise local folder
-const POSTED_LOG_FILE = process.env.RENDER 
-    ? '/var/data/posted_reels.json' 
-    : path.join(__dirname, 'posted_reels.json');
+// Use simple local file path so GitHub Actions can save and commit it
+const POSTED_LOG_FILE = path.join(__dirname, 'posted_reels.json');
 
 function getPostedIds(): string[] {
     if (!fs.existsSync(POSTED_LOG_FILE)) return [];
