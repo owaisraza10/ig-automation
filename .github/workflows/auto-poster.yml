@@ -2,8 +2,11 @@ name: Instagram Reels Automation
 
 on:
   schedule:
-    - cron: '0 */2 * * *' # Runs automatically every 2 hours
-  workflow_dispatch: # Allows you to test it manually with a click from GitHub
+    - cron: '0 */2 * * *' # Runs every 2 hours
+  workflow_dispatch:
+
+permissions:
+  contents: write # Crucial: Allows the bot to commit back to the repository
 
 jobs:
   post-reel:
